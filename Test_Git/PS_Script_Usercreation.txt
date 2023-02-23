@@ -1,0 +1,11 @@
+$testUserAccountName = 'ansible'
+$testUserAccountPassword = (ConvertTo-SecureString -String 'Baryons@54321' -AsPlainText -Force)
+if (-not (Get-LocalUser -Name $testUserAccountName -ErrorAction Ignore)) {
+    $newUserParams = @{
+        Name                 = $testUserAccountName
+        AccountNeverExpires  = $true
+        PasswordNeverExpires = $true
+        Password             = $testUserAccountPassword
+    }
+    $null = New-LocalUser @newUserParams
+}

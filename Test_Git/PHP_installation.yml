@@ -1,0 +1,45 @@
+---
+- hosts: 
+  become: yes
+  vars:
+    - version: 7.2
+#    - version_old: 8.0
+
+  tasks:
+    - name: Installation install software-properties-common
+      apt: name=software-properties-common
+
+    - name: "Repo PHP {{ version }}"
+      apt_repository:
+        repo="ppa:ondrej/php"
+
+    - name: "Updating the repo"
+      apt: update_cache=yes
+
+    - name: Installation PHP {{ version }}
+      apt: name=php{{ version }} state=present
+     - name: install PHP{{ version }}
+      apt:
+        pkg:
+          - php{{ version }}-mysql
+          - php{{ version }}-curl
+          - php{{ version }}-json
+          - php{{ version }}-cgi
+          - php{{ version }}-xsl
+          - php{{ version }}-cgi
+          - php{{ version }}-gd
+          - php{{ version }}-mbstring
+          - php{{ version }}-zip
+          - php{{ version }}-xmlrpc
+          - php{{ version }}-soap
+          - php{{ version }}-intl
+          - libapache2-mod-php
+        state: present
+        update_cache: yes
+
+    - name: shell commands
+      shell:
+       cmd: "sudo update-alternatives --set php /usr/bin/php{{ version }}"
+       cmd: "sudo a2enmod php{{ version }}"
+       cmd: "systemctl restart apache2"
+       cmd: "sudo update-alternatives --set php /usr/bin/php{{ version }}"
