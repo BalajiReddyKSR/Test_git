@@ -1,0 +1,13 @@
+---
+- name: ADS
+  hosts: localhost:Windows:Ubuntu
+  connection: local
+  tasks:
+    - name: ADS shutdown
+      shell: sh /home/Ansible/Ansible_Plays/ADS_Shutdown.sh
+
+    - name: shutdown windows machines
+      win_command: shutdown /s
+
+    - name: Unconditionally shut down the machine with all defaults
+      community.general.shutdown:
